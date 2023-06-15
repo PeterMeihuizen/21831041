@@ -26,7 +26,7 @@ Thesis_FP: FALSE
 # Comment: ----- Follow this pattern for up to 5 authors
 AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
 Author1: "Peter Meihuizen"  # First Author - note the thanks message displayed as an italic footnote of first page.
-Ref1: "Stellenbosch, South Africa" # First Author's Affiliation
+Ref1: "Stellenbosch University" # First Author's Affiliation
 Email1: "21831041\\@sun.ac.za" # First Author's Email address
 
 #Author2: "John Smith"
