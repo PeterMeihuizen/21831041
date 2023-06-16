@@ -7,3 +7,4 @@ deathdf <- deathdf %>%
         date >= as.Date("2022-01-01") & date <= as.Date("2022-06-01") ~ "2022_01",
         TRUE ~ NA_character_
     ))
+

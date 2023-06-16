@@ -26,8 +26,8 @@ Thesis_FP: FALSE
 # Comment: ----- Follow this pattern for up to 5 authors
 AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
 Author1: "Peter Meihuizen"  # First Author - note the thanks message displayed as an italic footnote of first page.
-Ref1: "Stellenbosch University" # First Author's Affiliation
-Email1: "21831041\\@sun.ac.za" # First Author's Email address
+Ref1: "Stellenbosch Univerity, South Africa" # First Author's Affiliation
+Email1: "21831041\\@sun.az.za" # First Author's Email address
 
 #Author2: "John Smith"
 #Ref2: "Some other Institution, Cape Town, South Africa"
@@ -92,7 +92,7 @@ output:
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
 #abstract: |
-#  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+ # Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -123,4 +123,204 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
+
+
+# Analysis \label{Analysis}
+
+Ok so firstly I need to import the data.
+
+```{r}
+library(csvread)
+coviddf <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_1\\data\\Covid\\owid-covid-data.csv")
+```
+
+Ok so firstly I want to compare how Covid affected African countries relative to other continents. In order to do this I'm going to compare various COVID-19 statistics over 6 month intervals for every continent. Therefore I will divide the times period into 5 periods: 2020-01, 2020-07, 2021-01, 2021-07 and 2022-01. I will give the mean value for each of these continents over each 6 month period.
+
+In order to do this I need to build a function which calculates the mean value for a particular country over this a particular 6 month period. 
+
+I want to look at the mean value for total_cases_by_million for each country so I'll use the function calculate the mean for each country based on each period.
+
+```{r}
+library(tidyverse)
+
+coviddf <- coviddf %>%
+  group_by(location) %>%
+  mutate(
+    mean_total_cases = mean_country(., "total_cases_per_million")[[1]]
+  ) %>%
+  ungroup()
+```
+
+Ok so this function is giving me errors and is not working so I'm going to try simplify it to calculate the mean_total cases for each country in that particular period, first I'm going to add a period column to the main data frame indicating the 5 different periods.
+
+```{r}
+coviddf <- coviddf %>%
+  mutate(period = case_when(
+    date >= as.Date("2020-01-01") & date <= as.Date("2020-06-01") ~ "2020_01",
+    date >= as.Date("2020-07-01") & date <= as.Date("2020-12-31") ~ "2020_07",
+    date >= as.Date("2021-01-01") & date <= as.Date("2021-06-01") ~ "2021_01",
+    date >= as.Date("2021-07-01") & date <= as.Date("2021-12-31") ~ "2021_07",
+    date >= as.Date("2022-01-01") & date <= as.Date("2022-06-01") ~ "2022_01",
+    TRUE ~ NA_character_
+  ))
+
+coviddf <- coviddf %>% 
+  group_by(location, period) %>%
+  mutate(mean_cases = mean(total_cases_per_million, na.rm = TRUE),
+         mean_vacs = 1000 * mean(total_vaccinations_per_hundred, na.rm = TRUE),
+         mean_deaths = mean(total_deaths_per_million, na.rm = TRUE),
+         mean_hosp = mean(hosp_patients_per_million, na.rm = TRUE)) %>%
+  ungroup()
+```
+
+Now I generate the bargraphs showings the growing rates of the average cases, hospitalisations, deaths and vaccinations.
+
+```{r}
+# Plot the bar plot
+ggplot(coviddf[!is.na(coviddf$period), ], aes(x = continent, y = mean_cases, fill = continent)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  facet_wrap(~ period, scales = "free_x") +
+  labs(x = "Period", y = "Mean Cases Per Million", fill = "Continent") +
+  theme_bw() + 
+    theme(axis.text.x = element_blank())
+
+ggplot(coviddf[!is.na(coviddf$period), ], aes(x = continent, y = mean_hosp, fill = continent)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  facet_wrap(~ period, scales = "free_x") +
+  labs(x = "Period", y = "Mean Daily Hospitilisations Per Million", fill = "Continent") +
+  theme_bw() + 
+    theme(axis.text.x = element_blank())
+
+ggplot(coviddf[!is.na(coviddf$period), ], aes(x = continent, y = mean_deaths, fill = continent)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  facet_wrap(~ period, scales = "free_x") +
+  labs(x = "Period", y = "Mean Deaths Per Million", fill = "Continent") +
+  theme_bw() + 
+    theme(axis.text.x = element_blank())
+
+ggplot(coviddf[!is.na(coviddf$period), ], aes(x = continent, y = mean_vacs, fill = continent)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge") +
+  facet_wrap(~ period, scales = "free_x") +
+  labs(x = "Period", y = "Mean Vaccinations Per Million", fill = "Continent") +
+  theme_bw() + 
+    theme(axis.text.x = element_blank())
+
+```
+
+Ok, I'm going to try create a new more simple function which creates a new column showing the mean for a pariticular variable for each period.
+
+```{r}
+create_mean_barplot(coviddf[!is.na(coviddf$period), ], "mean_cases", y_lab = "Mean Cases Per Million")
+```
+
+Ok so as can be seen in the reuslts Africa is the least affected by Covid on all accounts. Of all the continents it has the lowest number of cases, hospitalisations, deaths and vaccinations per million of every continent. It appears the more developed continents, Europe and North America are the most significantly affected.
+
+For the next part of my analysis I want to look at the correlation between smoking and hospitalisations to see if countries with an higher rate of smoking are more likely to be hospitalised. I need to import the death_by_cause data to look at smoking related deaths.
+
+```{r}
+deathdf <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_1\\data\\Covid\\Deaths_by_cause.csv")
+```
+
+Because Europe was most significantly affected by Covid I want to only look at European countries to do my comparison, I therefore want to look at those countries which had the greatest level of lower respiratory infections as these can cause higher death rates amongst smokers as they have weaker lungs. Therefore I need to look at the European countries with the 3 greatest number of average daily hospitalisations and the 3 lowest. I will find the hospitialisations and populations of all measured European countries.
+
+```{r}
+
+Eur_hosp_smoke <- coviddf %>%
+  filter(continent == "Europe") %>%
+  group_by(location) %>%
+  summarise(mean_hosp = mean(mean_hosp, na.rm = TRUE), mean_pop = mean(population, na.rm = TRUE)) %>%
+    filter(!is.na(mean_hosp)) %>%
+  arrange(desc(mean_hosp))
+
+
+Eur_hosp_smoke
+```
+
+Ok so based on this it shows that the highest daily hospitalisations for Covid in Europe over the five periods were in Bulgaria, Serbia, Lithuania, Romania and Hungary whilst the lowest recorded daily hospitalisations were in Norway, Finland, Iceland, Denmark and the Netherlands. 
+
+Now I need to look at each countries prevalence for smoking by averaging their respiratory infection deaths form the Deaths_by_cause data set.
+
+```{r}
+avg_resp_deaths <- deathdf %>%
+  filter(Entity %in% c("Bulgaria", "Serbia", "Lithuania", "Romania", "Hungary", "Norway", "Finland", "Iceland", "Denmark", "Netherlands")) %>%
+  group_by(Entity) %>%
+  summarise(avg_resp_deaths = mean(Deaths...Lower.respiratory.infections...Sex..Both...Age..All.Ages..Number., na.rm = TRUE)) %>% 
+    rename(location = Entity)
+```
+
+Now I need to combine these two sets to compare respiratory deaths with covid hospitalisation and create a respiratoty deaths per population variable.
+
+```{r}
+Eur_hosp_smoke <- Eur_hosp_smoke %>%
+  left_join(select(avg_resp_deaths, location, avg_resp_deaths), by = "location") %>%
+  filter(!is.na(avg_resp_deaths)) %>%
+  mutate(percent_resp_deaths = (avg_resp_deaths / mean_pop) * 1000000)
+```
+
+Now that I have the average number of Covid hospitalisations and the number of lower respiratory infection deaths per million of the population I can create a scatter polt to see if their was any correlation.
+
+```{r}
+ggplot(Eur_hosp_smoke, aes(x = percent_resp_deaths, y = mean_hosp)) +
+  geom_point() +
+  labs(x = "Historical Respiratory Deaths", y = "Daily Covid Hospitalizations") +
+    ggtitle("Scatterplot of European Countries Covid Hospitillzations and Historical Respiratory Deaths") +
+  theme_bw()
+
+
+resp_death_table <- Eur_hosp_smoke %>%
+  select(location, mean_hosp, percent_resp_deaths)
+
+print(resp_death_table)
+```
+
+So as can be seen there is almost no correlation between the historical respiratory deaths and daily Covid hospitilations for countries in Europe. This would suggest that countries with historically high levels of smoking are unlikely to have more or less covid-related hospitalisations. 
+
+For the final part of the question I'm going to look at hospitalisation numbers and ICU numbers for each continent and see if the one led or lagged the other. Ok so first I'm going to group the data by continent and by month.
+
+```{r}
+library(lubridate)
+
+time_covid <- coviddf %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(continent, year_month = format(date, "%Y-%m")) %>%
+  summarise(cont_hosp = mean(hosp_patients_per_million, na.rm = TRUE),
+            cont_ICU = mean(icu_patients_per_million, na.rm = TRUE),
+            .groups = 'drop')
+```
+
+Now I want to plot the data to see if hospitalisations number lead or lag ICU numbers.
+
+```{r}
+ggplot(time_covid, aes(x = year_month, group = continent)) +
+  geom_line(aes(y = cont_hosp, color = continent, linetype = "Hospitalized")) +
+  geom_line(aes(y = cont_ICU, color = continent, linetype = "ICU")) +
+  labs(x = "Month", y = "Value", color = "Continent", linetype = "Variable") +
+  ggtitle("Average Hospitalized Patients and ICU Patients per Million by Continent") +
+  theme_bw()
+
+library(ggplot2)
+
+ggplot(time_covid[time_covid$continent == "Europe", ], aes(x = year_month, group = continent)) +
+  geom_line(aes(y = cont_hosp, color = continent, linetype = "Hospitalized")) +
+  geom_line(aes(y = cont_ICU, color = continent, linetype = "ICU")) +
+  labs(x = "Month", y = "Value", color = "Continent", linetype = "Variable") +
+  ggtitle("Average Hospitalized Patients and ICU Patients per Million in Europe") +
+  theme_bw() 
+
+ggplot(time_covid[time_covid$continent == "Asia", ], aes(x = year_month, group = continent)) +
+  geom_line(aes(y = cont_hosp, color = continent, linetype = "Hospitalized")) +
+  geom_line(aes(y = cont_ICU, color = continent, linetype = "ICU")) +
+  labs(x = "Month", y = "Value", color = "Continent", linetype = "Variable") +
+  ggtitle("Average Hospitalized Patients and ICU Patients per Million in Asia") +
+  theme_bw() 
+
+ggplot(time_covid[time_covid$continent == "North America", ], aes(x = year_month, group = continent)) +
+  geom_line(aes(y = cont_hosp, color = continent, linetype = "Hospitalized")) +
+  geom_line(aes(y = cont_ICU, color = continent, linetype = "ICU")) +
+  labs(x = "Month", y = "Value", color = "Continent", linetype = "Variable") +
+  ggtitle("Average Hospitalized Patients and ICU Patients per Million in North America") +
+  theme_bw() 
+```
+
+Therefore it appears that the level of hospitalizations, which is being used as a proxy for hospital capacity, coincides with an increase in ICU admissions for Europe, Asia and North America when looking at the monthly admissions.
 
