@@ -123,3 +123,5 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
+Ok so lets see what is popular on netflix.
+

@@ -130,7 +130,110 @@ This question shows the popularity of different songs, I will try to analyse the
 I first need to import the data for both Coldplay and Metallica's songs.
 
 ```{r}
-ColdPlay <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\Coldplay.csv")
-Matallica <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\metallica.csv")
+Coldplay <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\Coldplay.csv")
+
+Metallica <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\metallica.csv")
+source("code/create_scatterplot.R")
+source("code/boxplot_create.R")
 ```
 
+So I want to look at what makes songs popular, so I'm going to do some scatter plots to plot the songs various aspects with their popularity to see how they compare. To do this I'm going to build a function which makes a scatterplot.
+
+Plotting the scatterplot shows as follows:
+
+```{r}
+Coldplay %>% 
+    create_scatterplot(valence, popularity, title = "Coldplay Songs Popularity and Positivity")
+```
+
+It can be seen that Coldplay's music mostly has a lower valence, meaning it resembles mostly negative emotions, and it appears that the more positve music does slightly worse than more negative music.
+
+Everyone like to dance right? So what effect does the danceability have on the popularity of their songs?
+
+```{r}
+Coldplay %>% 
+    create_scatterplot(danceability, popularity, title = "Coldplay Songs Popularity and Tempo")
+```
+
+Again it appears that danceability has a positive effect on the popularity of Coldplay's songs.
+
+Ok what about Metallica?
+
+```{r}
+Metallica %>% 
+    create_scatterplot(valence, popularity, title = "Metallica Songs Popularity and Positivity")
+```
+
+There seems to be minimal correlation between valence and popularity for Metallica's songs. It seems as though their songs are more concentrated around a low valence, suggesting they express negative emotions. However their more positive songs are slgihtly more popular as is suggested by the very gradual slope of the correlation line.
+
+```{r}
+Metallica %>% 
+    create_scatterplot(danceability, popularity, title = "Metallica Songs Popularity and Tempo")
+```
+
+Again, the same as was seen with Coldplay, danceability increases the popularity of Metallica's songs, despite the majority of their songs being lower on the danceability scale.
+
+Ok so it seems as through danceability makes a particular bands songs more popular. 
+So let;s see if these bands became producing more dancing related music for their later albums. 
+
+In order to do this lets make a function that looks at the distribution of the danceability of the different albums of Coldplay and Metallica.
+
+I'm just going to rename the album_name column in the Coldplay data frame so that it is the same as in the Metallica data set. I am also going to get rid of the live albums and songs.
+
+```{r}
+Coldplay <- Coldplay %>%
+    rename(album = album_name) %>%
+    filter(!grepl("live|Live", album)) %>% 
+    filter(!grepl("live|Live", name))
+```
+
+Now ploting the boxplots, first by populariity:
+
+```{r}
+Coldplay %>% 
+    boxplot_create(popularity, y_lab = "Popularity", title = "Distribution of Popularity by Coldplay Album")
+```
+
+So as can be seen 
+
+Then by danceability:
+
+```{r}
+Coldplay %>% 
+    boxplot_create(danceability, y_lab = "Danceability", title = "Distribution of Danceability by Coldplay Album")
+```
+
+It appears as though the distribution of danceable songs on Coldplay's albums have been pretty centred, however.
+
+
+How about Metallica now. First I need to remove the live songs and albums.
+
+```{r}
+Metallica <- Metallica %>%
+    filter(!grepl("live|Live", album)) %>% 
+    filter(!grepl("live|Live", name))
+```
+
+Now to look at the popularity and danceability of the albums. First popularity.
+
+```{r}
+Metallica %>% 
+    boxplot_create(popularity, y_lab = "Popularity", title = "Distribution of Popularity by Metallica Album")
+```
+
+Now danceability.
+
+```{r}
+Metallica %>% 
+    boxplot_create(danceability, y_lab = "Danceability", title = "Distribution of Danceability by Metallica Album")
+```
+
+As can be seen...
+
+Ok now I want to look at the most popular songs on spotify and see what their danceability scores look like. So I'll import the data of the spotify songs.
+
+```{r}
+Spotify <- read.csv("C:/Users/Peter Meihuizen/Desktop/Masters/1st Semester/Data Science/Take-home test/Question_3/data/Coldplay_vs_Metallica/Broader_Spotify_Info.csv")
+```
+
+I see that there is no popularity variable on the spotify data set. Therefore I need to do analysis on another variable.
