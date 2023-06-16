@@ -123,3 +123,92 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
+For this question my goal is to prove to my friend that the weather in the UK is terrible.
+
+# Analysis \label{Analysis}
+
+To conduct my analysis I must first import my data files.
+
+```{r}
+london <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_2\\data\\London\\london_weather.csv")
+
+
+```
+
+Ok so first I want to plot a temperature graph showing the mean temperature for each month for both london and the midlands datasets. I will make a function which does this.I'm interested in convincing my friend not to move there therefore I am only concerned with assessing the weather since the turn of the 21st century. 
+
+```{r}
+library(lubridate)
+
+london <- london %>%
+  mutate(date = ymd(date)) %>%
+  mutate(month = format(date, "%m")) %>%
+  group_by(month) %>%
+  mutate(avg_temp_month = mean(mean_temp, na.rm = TRUE),
+         avg_prec_month = mean(precipitation, na.rm = TRUE),
+         avg_sun_month = mean(sunshine, na.rm = TRUE),
+         avg_cloud_month = mean(cloud_cover, na.rm = TRUE)) %>%
+  filter(date >= ymd("2000-01-01"))
+```
+
+
+Plotting a bargraph of the average temperature per month.
+
+
+```{r}
+# London average monthly temperature 
+
+ggplot(london, aes(x = month, y = avg_temp_month)) +
+  stat_summary(geom = "bar", fill = "pink", fun = "mean") +
+  labs(x = "Month", y = "Average Temperature", title = "Average Monthly Temperature for London") +
+  theme_bw()
+
+ggplot(london, aes(x = month, y = avg_prec_month)) +
+  stat_summary(geom = "bar", fill = "blue", fun = "mean") +
+  labs(x = "Month", y = "Average Precipitation", title = "Average Monthly Precipitation for London") +
+  theme_bw()
+
+ggplot(london, aes(x = month, y = avg_sun_month)) +
+  stat_summary(geom = "bar", fill = "yellow", fun = "mean") +
+  labs(x = "Month", y = "Average Sunshine", title = "Average Monthly Sunshine for London") +
+  theme_bw()
+
+ggplot(london, aes(x = month, y = avg_cloud_month)) +
+  stat_summary(geom = "bar", fill = "grey", fun = "mean") +
+  labs(x = "Month", y = "Average Cloud Cover", title = "Average Monthly Cloud Cover for London") +
+  theme_bw()
+```
+
+Now we import the data for the midlands in the UK and look at the monthly weather here.
+
+```{r}
+midlands <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_2\\data\\London\\UKMonthly_Detailed.csv")
+
+midlands <- midlands %>%
+  mutate(date = as.Date(paste0(date, "-01"), format = "%Y-%m-%d")) %>%
+    mutate(date = ymd(date)) %>%
+  mutate(month = format(date, "%m")) %>%
+  group_by(month) %>%
+  mutate(avg_temp_month = mean(TAVG, na.rm = TRUE),
+         avg_prec_month = mean(EMXT, na.rm = TRUE)) %>%
+  filter(date >= ymd("2000-01-01"))
+
+
+```
+
+
+
+```{r}
+ggplot(midlands, aes(x = month, y = avg_temp_month)) +
+  stat_summary(geom = "bar", fill = "pink", fun = "mean") +
+  labs(x = "Month", y = "Average Temperature", title = "Average Monthly Temperature for London") +
+  theme_bw()
+
+ggplot(midlands, aes(x = month, y = avg_prec_month)) +
+  stat_summary(geom = "bar", fill = "blue", fun = "mean") +
+  labs(x = "Month", y = "Average Precipitation", title = "Average Monthly Precipitation for London") +
+  theme_bw()
+```
+
+
+
