@@ -123,3 +123,14 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
+This question shows the popularity of different songs, I will try to analyse these different songs to see what makes a song popular.
+
+# Analysis \label{Analysis}
+
+I first need to import the data for both Coldplay and Metallica's songs.
+
+```{r}
+ColdPlay <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\Coldplay.csv")
+Matallica <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_3\\data\\Coldplay_vs_Metallica\\metallica.csv")
+```
+
