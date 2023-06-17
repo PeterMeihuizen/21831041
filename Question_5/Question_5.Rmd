@@ -133,7 +133,29 @@ Firstly I need to import the data.
 Google <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_5\\data\\googleplay\\googleplaystore.csv")
 ```
 
-ok so based on the data I want to see what are the most downloaded types of app, therefore I will look at the median number of downloads per application type.
+Ok so based on the data I want to see what are the most downloaded types of apps, therefore I will look at the median number of downloads per application type. First I need to change this line to be numeric values.
+
+```{r}
+Google$Installs <- as.numeric(gsub("[+,]", "", Google$Installs))
+```
+
+Ok so now I want to see which app categories are the most used. In order to do that I am going to do a scatter plot which shows the average number of reviews of each app category, as well as the average number of downloads received by each category.
+
+```{r}
+
+
+```
+
+Ok so we can see that communication apps are by far the most installed type of app on average, having the highest average number of reviews and installations. In terms of installations it is followed by social apps and then gaming apps. The second most reviewed category seems to be video_players.
+
+So we know what is the most used types of apps and most reviewed. However an important factor when understanding the reviews of a 
+
+```{r}
+Review <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_5\\data\\googleplay\\googleplaystore_user_reviews.csv")
+```
+
+
+
 
 
 
