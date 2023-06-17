@@ -40,8 +40,8 @@ Email1: "21831041\\sun.ac.za" # First Author's Email address
 #CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
 
 # Comment out below to remove both. JEL Codes only given if keywords also given.
-keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
-JELCodes: "L250 \\sep L100"
+#keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
+#JELCodes: "L250 \\sep L100"
 
 # ----- Manage headers and footers:
 #BottomLFooter: $Title$
@@ -137,30 +137,26 @@ actors <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\
 We now have a netflix data set showing the information on shows and movies, whilst the actors data shows the information of actors and the characters they play in a specific movie. IMDB is a well respected website which gives reliable ratings while accurately reflects public opinion towards shows and movies. Therefore I will use IMDB scores as a metric for quality of a show or movie, and I will use the number of IMDB votes as a metric for the number of people who watched the show/movie. To see if the more frequently watched movies are also highly rated I will plot the 10 most voted movies and there IMDB scores.
 
 ```{r}
-top_10_imdb <- netflix %>%
-  arrange(desc(imdb_votes)) %>%
-  select(title, imdb_votes, type, release_year, imdb_score, production_countries) %>%
-  head(10)
+top_10_imdb_votes <- netflix %>% 
+  top10(imdb_votes, title, type, release_year, imdb_score, production_countries, x = 10)
 
-top_10_imdb
-
+top_10_imdb_votes
 ```
 
 As can be seen the most voted movies and shows on IMDB all also have very high ratings. They are also very well_known movies and tv shows. This shows that well_known and highly rated movies/shows are the most popular amongst viewers. It can also be seen that all the top picks are made by US or GB production companies. 
 
-In order to be a successful streaming company, we need people to watch our content therefore I will use imdb_votes as the metric for viewership and see what factors atracts people to watch particular movies. 
+In order to be a successful streaming company, we need people to watch our content therefore I will use imdb_votes as the metric for viewership and see what factors atracts people to watch particular content. I have decided that I am only going to look at what makes shows popular and successful and exclude movies. The reason for this is that shows have a much longer runtime overall than movies meaning people are much more inclined to have a subscription to a streaming service if has got a good show compared to a good movie, because a show will provide more hours of entertainment. Ok so using the actors and netflix data set, I am  going to look at the top 200 shows most viewed shows and see the breakdown of these shows by genre.
 
-The first thing I want to see is how running time is correlated with votes. I'm going to usee the same scatterplot function used in question 3 to see the correlation.
+Ok so I want to build a function which shows the distribution of the top 200 shows on netflix. Ok so I'm having issues with my function so I'm just going to create two data sets each with only movies and only shows in case I want to see the most popular movie genres also.
 
 ```{r}
- netflix %>% 
-  create_scatterplot(runtime, imdb_votes, title = "Shows/Movies IMDB Votes and Runtime")
+movies <- filter(netflix, grepl("MOVIE", netflix$type)) 
+shows <- filter(netflix, grepl("SHOW", netflix$type))
 ```
 
-Ok this doesn't give us any good information really because there is a large distribution of movies and shows with very little votes. Therefore we need to find another way to determine what makes movies or shows successful. We know that high scoring content gets good viewership, therefore lets do a graph with IMDB scores and runtime.
+Ok now that I have seprated the data sets, we can work out the most popular 200 shows to see what genres are popular.  
 
 ```{r}
- netflix %>% 
-  create_scatterplot(runtime, imdb_score, title = "Shows/Movies IMDB Votes and Runtime")
+top200_shows <- top200(shows)
 ```
 

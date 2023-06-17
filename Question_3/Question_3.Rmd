@@ -40,8 +40,8 @@ Email1: "21831041\\@sun.ac.za" # First Author's Email address
 #CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
 
 # Comment out below to remove both. JEL Codes only given if keywords also given.
-keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
-JELCodes: "L250 \\sep L100"
+#keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
+#JELCodes: "L250 \\sep L100"
 
 # ----- Manage headers and footers:
 #BottomLFooter: $Title$
@@ -187,11 +187,13 @@ Coldplay <- Coldplay %>%
     filter(!grepl("live|Live", name))
 ```
 
-Now ploting the boxplots, first by populariity:
+Now ploting the boxplots, first by popularity:
 
 ```{r}
-Coldplay %>% 
+Coldplay_pop <- Coldplay %>% 
     boxplot_create(popularity, y_lab = "Popularity", title = "Distribution of Popularity by Coldplay Album")
+
+Coldplay_pop
 ```
 
 So as can be seen 
@@ -230,10 +232,3 @@ Metallica %>%
 
 As can be seen...
 
-Ok now I want to look at the most popular songs on spotify and see what their danceability scores look like. So I'll import the data of the spotify songs.
-
-```{r}
-Spotify <- read.csv("C:/Users/Peter Meihuizen/Desktop/Masters/1st Semester/Data Science/Take-home test/Question_3/data/Coldplay_vs_Metallica/Broader_Spotify_Info.csv")
-```
-
-I see that there is no popularity variable on the spotify data set. Therefore I need to do analysis on another variable.
