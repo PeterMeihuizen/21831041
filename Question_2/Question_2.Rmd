@@ -1,98 +1,36 @@
 ---
-# IMPORTANT: Change settings here, but DO NOT change the spacing.
-# Remove comments and add values where applicable.
-# The descriptions below should be self-explanatory
-
 title: "Question 2"
-#subtitle: "This will appear as Right Header"
-
-documentclass: "elsarticle"
-
-# --------- Thesis title (Optional - set to FALSE by default).
-# You can move the details below around as you please.
-Thesis_FP: FALSE
-# Entry1: "An unbelievable study with a title spanning multiple lines."
-# Entry2: "\\textbf{Some Guy}" # textbf for bold
-# Entry3: "A thesis submitted toward the degree of Doctor of Philosophy"
-# Uni_Logo: Tex/Logo.png # Place a logo in the indicated location (from your root, e.g. defaults to ~/Tex/Logo.png) and uncomment this line. Leave uncommented for no image
-# Logo_width: 0.3 # If using a logo - use this to set width (size) of image
-# Entry4: "Under the supervision of: \\vfill Prof. Joe Smith and Dr. Frank Smith"
-# Entry5: "Stellenbosch University"
-# Entry6: April 2020
-# Entry7:
-# Entry8:
-
-# --------- Front Page
-# Comment: ----- Follow this pattern for up to 5 authors
-AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
-Author1: "Peter Meihuizen"  # First Author - note the thanks message displayed as an italic footnote of first page.
-Ref1: "Stellenbosch Univerity, South Africa" # First Author's Affiliation
-Email1: "21831041\\@sun.az.za" # First Author's Email address
-
-#Author2: "John Smith"
-#Ref2: "Some other Institution, Cape Town, South Africa"
-#Email2: "John\\@gmail.com"
-#CommonAffiliation_12: TRUE # If Author 1 and 2 have a common affiliation. Works with _13, _23, etc.
-
-#Author3: "John Doe"
-#Email3: "Joe\\@gmail.com"
-
-#CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
-
-# Comment out below to remove both. JEL Codes only given if keywords also given.
-keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
-JELCodes: "L250 \\sep L100"
-
-# ----- Manage headers and footers:
-#BottomLFooter: $Title$
-#BottomCFooter:
-#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
-BottomRFooter: "\\footnotesize Page \\thepage" # Add a '#' before this line to remove footer.
-addtoprule: TRUE
-addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
-
-# --------- page margins:
-margin: 2.3 # Sides
-bottom: 2 # bottom
-top: 2.5 # Top
-HardSet_layout: TRUE # Hard-set the spacing of words in your document. This will stop LaTeX squashing text to fit on pages, e.g.
-# This is done by hard-setting the spacing dimensions. Set to FALSE if you want LaTeX to optimize this for your paper.
-
-# --------- Line numbers
-linenumbers: FALSE # Used when submitting to journal
-
-# ---------- References settings:
-# You can download cls format here: https://www.zotero.org/ - simply search for your institution. You can also edit and save cls formats here: https://editor.citationstyles.org/about/
-# Hit download, store it in Tex/ folder, and change reference below - easy.
-bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
-csl: Tex/harvard-stellenbosch-university.csl # referencing format used.
-# By default, the bibliography only displays the cited references. If you want to change this, you can comment out one of the following:
-#nocite: '@*' # Add all items in bibliography, whether cited or not
-# nocite: |  # add specific references that aren't cited
-#  @grinold2000
-#  @Someoneelse2010
-
-# ---------- General:
-RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
-Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
-toc: FALSE                       # Add a table of contents
-numbersections: TRUE             # Should sections (and thus figures and tables) be numbered?
-fontsize: 11pt                  # Set fontsize
-linestretch: 1.2                # Set distance between lines.
-link-citations: TRUE            # This creates dynamic links to the papers in reference list.
-
-### Adding additional latex packages:
-# header-includes:
-#    - \usepackage{colortbl} # Add additional packages here.
-
+documentclass: elsarticle
+Thesis_FP: no
 output:
+  html_document:
+    df_print: paged
   pdf_document:
-    keep_tex: TRUE
+    keep_tex: yes
     template: Tex/TexDefault.txt
-    fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
+    fig_width: 3.5
     fig_height: 3.5
-#abstract: |
- # Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+Author1: Peter Meihuizen
+Ref1: Stellenbosch Univerity, South Africa
+Email1: 21831041\@sun.az.za
+BottomRFooter: \footnotesize Page \thepage
+addtoprule: yes
+addfootrule: yes
+margin: 2.3
+bottom: 2
+top: 2.5
+HardSet_layout: yes
+linenumbers: no
+bibliography: Tex/ref.bib
+csl: "Tex/harvard-stellenbosch-university.csl"
+RemovePreprintSubmittedTo: yes
+Journal: Journal of Finance
+toc: no
+numbersections: yes
+fontsize: 11pt
+linestretch: 1.2
+link-citations: yes
+AddTitle: yes
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -131,84 +69,81 @@ To conduct my analysis I must first import my data files.
 
 ```{r}
 london <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_2\\data\\London\\london_weather.csv")
-
-
+source("code/plot_midlands.R")
+source("code/midlands_transform.R")
+source("code/london_weather.R")
+source("code/plot_london.R")
+source("code/transform_data.R")
 ```
 
-Ok so first I want to plot a temperature graph showing the mean temperature for each month for both london and the midlands datasets. I will make a function which does this.I'm interested in convincing my friend not to move there therefore I am only concerned with assessing the weather since the turn of the 21st century. 
+Ok so first I want to plot a temperature graph showing the mean temperature for each month for both london and the midlands datasets. I will make a function which does this and therefore I can replicate the process with other weather elements. I'm interested in convincing you not to move there, therefore I am only concerned with assessing the weather since the turn of the 21st century. 
 
 ```{r}
 library(lubridate)
 
-london <- london %>%
-  mutate(date = ymd(date)) %>%
-  mutate(month = format(date, "%m")) %>%
-  group_by(month) %>%
-  mutate(avg_temp_month = mean(mean_temp, na.rm = TRUE),
-         avg_prec_month = mean(precipitation, na.rm = TRUE),
-         avg_sun_month = mean(sunshine, na.rm = TRUE),
-         avg_cloud_month = mean(cloud_cover, na.rm = TRUE)) %>%
-  filter(date >= ymd("2000-01-01"))
+london <- transform_data(london)
 ```
 
 
-Plotting a bargraph of the average temperature per month.
+Plotting a bargraph of the average temperature, sunshine, rain and cloud cover in London per month.
 
 
 ```{r}
-# London average monthly temperature 
+# Generate Average Monthly Temperature plot for London
+temp_lon <- london_weather(london, quote(avg_temp_month), "Average Temperature",
+                            "Average Monthly Temperature for London", "pink")
+temp_lon
 
-ggplot(london, aes(x = month, y = avg_temp_month)) +
-  stat_summary(geom = "bar", fill = "pink", fun = "mean") +
-  labs(x = "Month", y = "Average Temperature", title = "Average Monthly Temperature for London") +
-  theme_bw()
+# Generate Average Monthly Precipitation plot for London
+prec_lon <- london_weather(london, quote(avg_prec_month), "Average Precipitation",
+                            "Average Monthly Precipitation for London", "blue")
+prec_lon
 
-ggplot(london, aes(x = month, y = avg_prec_month)) +
-  stat_summary(geom = "bar", fill = "blue", fun = "mean") +
-  labs(x = "Month", y = "Average Precipitation", title = "Average Monthly Precipitation for London") +
-  theme_bw()
+# Generate Average Monthly Sunshine plot for London
+sun_lon <- london_weather(london, quote(avg_sun_month), "Average Sunshine",
+                            "Average Monthly Sunshine for London", "yellow")
+sun_lon
 
-ggplot(london, aes(x = month, y = avg_sun_month)) +
-  stat_summary(geom = "bar", fill = "yellow", fun = "mean") +
-  labs(x = "Month", y = "Average Sunshine", title = "Average Monthly Sunshine for London") +
-  theme_bw()
-
-ggplot(london, aes(x = month, y = avg_cloud_month)) +
-  stat_summary(geom = "bar", fill = "grey", fun = "mean") +
-  labs(x = "Month", y = "Average Cloud Cover", title = "Average Monthly Cloud Cover for London") +
-  theme_bw()
+# Generate Average Monthly Cloud Cover plot for London
+clo_lon <- london_weather(london, quote(avg_cloud_month), "Average Cloud Cover",
+                            "Average Monthly Cloud Cover for London", "grey")
+clo_lon
 ```
 
-Now we import the data for the midlands in the UK and look at the monthly weather here.
+This measures the average for each month over a 20 year period and as can be seen the weather in London is pretty miserable. In their best months they only get 6 hours of sun on average a day, even though it is daytime for over 16 hours in those months. They get constant rain and cloud cover throughout the year and their average temperature doesn't even get above 20 in their best months. But you want to live in the mid parts of england so lets see how these stats look compared to London.
+
+Now we must import the data for the midlands in the UK and look at the monthly weather here.
 
 ```{r}
 midlands <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_2\\data\\London\\UKMonthly_Detailed.csv")
-
-midlands <- midlands %>%
-  mutate(date = as.Date(paste0(date, "-01"), format = "%Y-%m-%d")) %>%
-    mutate(date = ymd(date)) %>%
-  mutate(month = format(date, "%m")) %>%
-  group_by(month) %>%
-  mutate(avg_temp_month = mean(TAVG, na.rm = TRUE),
-         avg_prec_month = mean(EMXT, na.rm = TRUE)) %>%
-  filter(date >= ymd("2000-01-01"))
-
-
 ```
 
-
+Now we transfrom the data.
 
 ```{r}
-ggplot(midlands, aes(x = month, y = avg_temp_month)) +
-  stat_summary(geom = "bar", fill = "pink", fun = "mean") +
-  labs(x = "Month", y = "Average Temperature", title = "Average Monthly Temperature for London") +
-  theme_bw()
+library(dplyr)
+library(lubridate)
 
-ggplot(midlands, aes(x = month, y = avg_prec_month)) +
-  stat_summary(geom = "bar", fill = "blue", fun = "mean") +
-  labs(x = "Month", y = "Average Precipitation", title = "Average Monthly Precipitation for London") +
-  theme_bw()
+midlands <- midlands_transform(midlands)
 ```
 
+Ok so the only values we have are for temperature and precipitation. Once again we're looking at the average temperature for each month over a 20 year period. However for precipitation the data shows the amount of rain on the most rainy day in the month. These values are then average over 20 years.
 
+```{r}
+temp_mid <- ggplot(midlands, aes(x = month, y = avg_temp_month)) +
+  stat_summary(geom = "bar", fill = "pink", fun = "mean") +
+  labs(x = "Month", y = "Average Temperature", title = "Average Monthly Temperature for Midlands") +
+  theme_bw()
+
+temp_mid
+
+prec_mid <- ggplot(midlands, aes(x = month, y = avg_prec_month)) +
+  stat_summary(geom = "bar", fill = "blue", fun = "mean") +
+  labs(x = "Month", y = "Average Precipitation", title = "Average Monthly Precipitation for Midlands") +
+  theme_bw()
+
+prec_mid
+```
+
+As you can see it is even colder in the midlands where you plan to go, every month is nearly 5 degrees colder than in London. Also the most rainy days of the year happen in Summer in the midlands based on these graphs. Even their warmest months have lots of rain. Therefore it is pretty evident that the weather in the UK is, as expected, pretty terrible and you should definitely rather stay in Cape Town.
 
