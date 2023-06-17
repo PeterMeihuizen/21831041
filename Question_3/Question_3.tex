@@ -185,15 +185,6 @@
 \vspace{1cm}
 
 
-\begin{keyword}
-\footnotesize{
-Multivariate GARCH \sep Kalman Filter \sep Copula \\
-\vspace{0.3cm}
-}
-\footnotesize{
-\textit{JEL classification} L250 \sep L100
-}
-\end{keyword}
 
 
 
@@ -230,8 +221,9 @@ Multivariate GARCH \sep Kalman Filter \sep Copula \\
 \section{\texorpdfstring{Introduction
 \label{Introduction}}{Introduction }}\label{introduction}}
 
-This question shows the popularity of different songs, I will try to
-analyse these different songs to see what makes a song popular.
+This question shows the popularity of different songs for Metallica and
+Coldplay. I will try to analyse these different songs to see what makes
+a song popular.
 
 \hypertarget{analysis}{%
 \section{\texorpdfstring{Analysis
@@ -249,10 +241,11 @@ Plotting the scatterplot shows as follows:
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-2-1.pdf}
 
 It can be seen that Coldplay's music mostly has a lower valence, meaning
-it resembles mostly negative emotions, and it appears that the more
-positve music does slightly worse than more negative music.
+it resembles mostly negative emotions, and it appears that there is a
+slight negative correlation between vlence and popualrity, suggesting
+more positive music does slightly worse than more negative music.
 
-Everyone like to dance right? So what effect does the danceability have
+Everyone likes to dance right? So what effect does the danceability have
 on the popularity of their songs?
 
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-3-1.pdf}
@@ -276,29 +269,29 @@ Again, the same as was seen with Coldplay, danceability increases the
 popularity of Metallica's songs, despite the majority of their songs
 being lower on the danceability scale.
 
-Ok so it seems as through danceability makes a particular bands songs
-more popular. So let;s see if these bands became producing more dancing
-related music for their later albums.
-
-In order to do this lets make a function that looks at the distribution
-of the danceability of the different albums of Coldplay and Metallica.
+Ok so it seems as though danceability makes a particular bands songs
+more popular. So let's see how the popularity and danceablility was
+distributed across their various albums and see whether these are
+linked. In order to do this lets make a function that looks at the
+distribution of the danceability of the different albums of Coldplay and
+Metallica.
 
 I'm just going to rename the album\_name column in the Coldplay data
 frame so that it is the same as in the Metallica data set. I am also
 going to get rid of the live albums and songs.
 
-Now ploting the boxplots, first by populariity:
+Now ploting the boxplots, first by popularity:
 
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-7-1.pdf}
 
-So as can be seen
-
-Then by danceability:
+So as can be seen Coldplay's albums vary quite a lot in terms of there
+popularity, some were significantly more popular than others. What abou
+the daceability of their albums?
 
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-8-1.pdf}
 
 It appears as though the distribution of danceable songs on Coldplay's
-albums have been pretty centred, however.
+albums have been pretty similar across albums.
 
 How about Metallica now. First I need to remove the live songs and
 albums.
@@ -308,18 +301,15 @@ popularity.
 
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-10-1.pdf}
 
-Now danceability.
+Ok similar to Coldplay there are some differences in popularity between
+Matallica's albums. Now let's look at their danceability.
 
 \includegraphics{Question_3_files/figure-latex/unnamed-chunk-11-1.pdf}
 
-As can be seen\ldots{}
-
-Ok now I want to look at the most popular songs on spotify and see what
-their danceability scores look like. So I'll import the data of the
-spotify songs.
-
-I see that there is no popularity variable on the spotify data set.
-Therefore I need to do analysis on another variable.
+As can be seen there's more variation within albums around the
+dancability of Metallica's songs, however this variation is seen in most
+of there albums suggesting they do not really change their methods
+between albums.
 
 \bibliography{Tex/ref}
 

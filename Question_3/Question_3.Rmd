@@ -123,7 +123,7 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
-This question shows the popularity of different songs, I will try to analyse these different songs to see what makes a song popular.
+This question shows the popularity of different songs for Metallica and Coldplay. I will try to analyse these different songs to see what makes a song popular.
 
 # Analysis \label{Analysis}
 
@@ -146,9 +146,9 @@ Coldplay %>%
     create_scatterplot(valence, popularity, title = "Coldplay Songs Popularity and Positivity")
 ```
 
-It can be seen that Coldplay's music mostly has a lower valence, meaning it resembles mostly negative emotions, and it appears that the more positve music does slightly worse than more negative music.
+It can be seen that Coldplay's music mostly has a lower valence, meaning it resembles mostly negative emotions, and it appears that there is a slight negative correlation between vlence and popualrity, suggesting more positive music does slightly worse than more negative music.
 
-Everyone like to dance right? So what effect does the danceability have on the popularity of their songs?
+Everyone likes to dance right? So what effect does the danceability have on the popularity of their songs?
 
 ```{r}
 Coldplay %>% 
@@ -173,10 +173,8 @@ Metallica %>%
 
 Again, the same as was seen with Coldplay, danceability increases the popularity of Metallica's songs, despite the majority of their songs being lower on the danceability scale.
 
-Ok so it seems as through danceability makes a particular bands songs more popular. 
-So let;s see if these bands became producing more dancing related music for their later albums. 
-
-In order to do this lets make a function that looks at the distribution of the danceability of the different albums of Coldplay and Metallica.
+Ok so it seems as though danceability makes a particular bands songs more popular. 
+So let's see how the popularity and danceablility was distributed across their various albums and see whether these are linked. In order to do this lets make a function that looks at the distribution of the danceability of the different albums of Coldplay and Metallica.
 
 I'm just going to rename the album_name column in the Coldplay data frame so that it is the same as in the Metallica data set. I am also going to get rid of the live albums and songs.
 
@@ -196,17 +194,16 @@ Coldplay_pop <- Coldplay %>%
 Coldplay_pop
 ```
 
-So as can be seen 
-
-Then by danceability:
+So as can be seen Coldplay's albums vary quite a lot in terms of there popularity, some were significantly more popular than others. What abou the daceability of their albums?
 
 ```{r}
-Coldplay %>% 
+Coldplay_dance <- Coldplay %>% 
     boxplot_create(danceability, y_lab = "Danceability", title = "Distribution of Danceability by Coldplay Album")
+
+Coldplay_dance
 ```
 
-It appears as though the distribution of danceable songs on Coldplay's albums have been pretty centred, however.
-
+It appears as though the distribution of danceable songs on Coldplay's albums have been pretty similar across albums. 
 
 How about Metallica now. First I need to remove the live songs and albums.
 
@@ -223,12 +220,12 @@ Metallica %>%
     boxplot_create(popularity, y_lab = "Popularity", title = "Distribution of Popularity by Metallica Album")
 ```
 
-Now danceability.
+Ok similar to Coldplay there are some differences in popularity between Matallica's albums. Now let's look at their danceability.
 
 ```{r}
 Metallica %>% 
     boxplot_create(danceability, y_lab = "Danceability", title = "Distribution of Danceability by Metallica Album")
 ```
 
-As can be seen...
+As can be seen there's more variation within albums around the dancability of Metallica's songs, however this variation is seen in most of there albums suggesting they do not really change their methods between albums.
 
