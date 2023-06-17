@@ -131,10 +131,11 @@ Let's first import the data
 
 ```{r}
 netflix <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_4\\data\\netflix\\titles.csv")
-actors <- read.csv("C:\\Users\\Peter Meihuizen\\Desktop\\Masters\\1st Semester\\Data Science\\Take-home test\\Question_4\\data\\netflix\\credits.csv")
+source("code/top10.R")
+source("code/top200.R")
 ```
 
-We now have a netflix data set showing the information on shows and movies, whilst the actors data shows the information of actors and the characters they play in a specific movie. IMDB is a well respected website which gives reliable ratings while accurately reflects public opinion towards shows and movies. Therefore I will use IMDB scores as a metric for quality of a show or movie, and I will use the number of IMDB votes as a metric for the number of people who watched the show/movie. To see if the more frequently watched movies are also highly rated I will plot the 10 most voted movies and there IMDB scores.
+We now have a netflix data set showing the information on shows and movies. This also shows the rating an votes made on IMDB, a well respected website which gives reliable ratings while accurately reflecting public opinion towards shows and movies. Therefore I will use IMDB scores as a metric for quality of a show or movie, and I will use the number of IMDB votes as a metric for the number of people who watched the show/movie. To see if the more frequently watched movies are also highly rated I will plot the 10 most voted movies and there IMDB scores.
 
 ```{r}
 top_10_imdb_votes <- netflix %>% 
@@ -143,9 +144,9 @@ top_10_imdb_votes <- netflix %>%
 top_10_imdb_votes
 ```
 
-As can be seen the most voted movies and shows on IMDB all also have very high ratings. They are also very well_known movies and tv shows. This shows that well_known and highly rated movies/shows are the most popular amongst viewers. It can also be seen that all the top picks are made by US or GB production companies. 
+As can be seen the most voted movies and shows on IMDB all also have very high ratings. They are also very well_known movies and tv shows. This shows that well-known and highly rated movies/shows are the most popular amongst viewers. It can also be seen that all the top picks are made by US or GB production companies. 
 
-In order to be a successful streaming company, we need people to watch our content therefore I will use imdb_votes as the metric for viewership and see what factors atracts people to watch particular content. I have decided that I am only going to look at what makes shows popular and successful and exclude movies. The reason for this is that shows have a much longer runtime overall than movies meaning people are much more inclined to have a subscription to a streaming service if has got a good show compared to a good movie, because a show will provide more hours of entertainment. Ok so using the actors and netflix data set, I am  going to look at the top 200 shows most viewed shows and see the breakdown of these shows by genre.
+In order to be a successful streaming company, we need people to watch our content therefore I will use imdb_votes as the metric for viewership and see what factors attracts people to watch particular content. Using the netflix data set, I am  going to look at the top 200 shows most viewed shows and movies and see the breakdown of these shows and movies by genre.
 
 Ok so I want to build a function which shows the distribution of the top 200 shows on netflix. Ok so I'm having issues with my function so I'm just going to create two data sets each with only movies and only shows in case I want to see the most popular movie genres also.
 
@@ -154,9 +155,14 @@ movies <- filter(netflix, grepl("MOVIE", netflix$type))
 shows <- filter(netflix, grepl("SHOW", netflix$type))
 ```
 
-Ok now that I have seprated the data sets, we can work out the most popular 200 shows to see what genres are popular.  
+Ok now that I have seperated the data sets, we can work out the most popular 200 shows to see what genres are popular.  
 
 ```{r}
-top200_shows <- top200(shows)
+top200_shows <- top200(shows, "Genres of Top 200 Shows")
+top200_shows
+
+top200_movies <- top200(movies, "Genres of Top 200 Movies")
+top200_movies
 ```
 
+Ok so as can be seen by both bargraphs, the top shpws and movies which are watched are drama and comedy. Drama is the most voted by quite a long way for both, but comedy also is significantly more popular than the remaining genres. All of the remaining genres are pretty similar in popularity. This shows that if you want to make a successful streaming platform, your content should be predominantly made up of drama shows and movies, as well as comedies.

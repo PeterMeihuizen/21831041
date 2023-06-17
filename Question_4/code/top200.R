@@ -1,4 +1,4 @@
-top200 <- function(data) {
+top200 <- function(data, graph_title) {
 gen_freq <-  data %>%
     arrange(desc(imdb_votes)) %>%
     head(200) %>%
@@ -6,7 +6,7 @@ gen_freq <-  data %>%
 
     genres <- function(data, Terms = c("documentation", "crime", "drama", "fantasy", "comedy", "family", "animation", "romance", "history", "scifi", "war", "thriller", "horror")){
       gen_freq <-
-        shows %>%
+        data %>%
         group_by(release_year) %>%
         summarise(freq = sum(grepl(paste(Terms, collapse = "|"), genres))) %>%
         mutate(Term = glue::glue_collapse(Terms, sep = ",", last = " and"))
@@ -30,13 +30,13 @@ gen_freq <-  data %>%
 
 plot_genres <- genre_df %>%
         group_by(Term) %>%
-        summarise(tot_sum = sum(freq)) %>%
+        summarise(tot_sum = sum(freq))
 
    top200_plot <- ggplot(plot_genres, aes(x = Term, y = tot_sum)) +
         geom_bar(stat = "identity") +
     labs(x = "Genre",
         y = "Votes",
-        title = "Genres of Top 200 Shows")
+        title = graph_title) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 top200_plot
